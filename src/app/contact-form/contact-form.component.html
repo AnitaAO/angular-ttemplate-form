@@ -1,0 +1,111 @@
+
+
+<form #contactForm="ngForm" ngSubmit="submit(contactForm)">
+  <table>
+    <thead>Contact Form</thead>
+    <br>
+    <tbody>
+      <tr>
+        <td>
+          <label for="fullName">Full name 
+          <br>
+            <input
+            required 
+            minlength="5" 
+            maxlength="20" 
+            class="form-control" 
+            type="text"  
+            ngModel 
+            name="fullName" 
+            #fullName="ngModel" 
+            (change)="click(fullName)">
+          </label>
+          <div *ngIf="fullName.touched && !fullName.valid">
+            <div *ngIf="fullName.errors.required">Full name is required!</div>
+            <div *ngIf="fullName.errors.minlength">Full name should be a minimum of {{fullName.errors.minlength.requiredLength}} characters
+            </div>
+            <div *ngIf="fullName.errors.maxlength">Full name must be a maximum of 20 characters</div>
+          </div>
+        </td>
+      </tr>
+  
+      <tr>
+       <td class="form-group">
+        <label>Email 
+        <br>
+          <input 
+          required
+          minlength="20"
+          maxlength="50"
+          class="form-control" 
+          type="text" 
+          ngModel 
+          name="email"  
+          #email="ngModel" 
+          (change)="log(email)" >
+          <div *ngIf="email.touched && !fullName.valid">
+          <div *ngIf="email.errors.required">The email address you have entered is not registered with us
+          </div>
+          <div *ngIf="email.errors.minlength">Email should be a minimum of 20 characters</div>
+          </div>
+        </label>
+       </td>
+      </tr>
+
+      <tr>
+        <td class="form-group">
+          <textarea name="message" id="message" cols="30" rows="10" ngModel #message="ngModel" required></textarea>
+          <div *ngIf="message.touched && !message.valid">
+            <div *ngIf="message.errors.required">Message is required</div>
+          </div>
+        </td>
+      </tr>
+
+      <!--adding a checkbox-->
+      <tr>
+        <td class="form-group">
+          <label>
+            <input 
+            class="form-control"
+            type="checkbox" 
+            ngModel 
+            name="isSubscribed">Subscribe to mailing list
+          </label>
+          <!--a diagnastic to view objects behind a form-->
+          <div>{{ contactForm.value | json}}</div>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="form-group">
+          <label for="contactMethod">
+            <select 
+            multiple
+            class="form-control"
+            ngModel 
+            name="contactMethod" 
+            id="contactMethod">
+              <option value=""></option>
+              <option *ngFor="let method of contactMethod" [value]="method.id">{{method.name}}</option>
+            </select>
+          </label>
+        </td>
+      </tr>
+
+      <tr>
+        <td *ngFor="let method of contactMethod" class="form-group" >
+          <label for="contactMethod">
+            <input ngModel type="radio" ngModel name="contactMethod" [value]="method.id">{{ method.name}}
+          </label>
+        </td>
+      </tr>
+
+      <button type="submit" [disabled]="!contactForm.valid">SUBMIT</button> 
+    </tbody>
+    <tfoot></tfoot>
+  </table>
+</form>
+
+<!--adding "multiple" to select in line 83 will allow user select multiple options
+    binding the !contactForm.valid to [disabled] will make the button inactive till all options are satisfied
+-->
